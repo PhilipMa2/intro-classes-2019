@@ -85,6 +85,20 @@ public class Fraction {
   }// add(Fraction)
 
   /**
+   * Get the denominator of this fraction.
+   */
+  public BigInteger denominator() {
+    return this.denom;
+  } // denominator()
+  
+  /**
+   * Get the numerator of this fraction.
+   */
+  public BigInteger numerator() {
+    return this.num;
+  } // numerator()
+  
+  /**
    * Convert this fraction to a string for ease of printing.
    */
   public String toString() {
