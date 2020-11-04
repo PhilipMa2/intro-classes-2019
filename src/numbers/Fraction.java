@@ -6,7 +6,7 @@ import java.math.BigInteger;
  * A simple implementation of Fractions.
  * 
  * @author Samuel A. Rebelsky
- * @author YOUR NAME HERE
+ * @author Yueran Ma
  * @version 1.1 of January 2019
  */
 public class Fraction {
@@ -43,6 +43,7 @@ public class Fraction {
   public Fraction(BigInteger num, BigInteger denom) {
     this.num = num;
     this.denom = denom;
+    simplify();
   } // Fraction(BigInteger, BigInteger)
 
   /**
@@ -53,7 +54,19 @@ public class Fraction {
   public Fraction(int num, int denom) {
     this.num = BigInteger.valueOf(num);
     this.denom = BigInteger.valueOf(denom);
+    simplify();
   } // Fraction(int, int)
+
+  /**
+   * Build a new fraction with given string value.
+   * @param value a string with two positive integers separated by a slash.
+   */
+  public Fraction(String value) {
+    int slash = value.indexOf('/');
+    num = new BigInteger(value.substring(0, slash).trim());
+    denom = new BigInteger(value.substring(slash + 1).trim());
+    simplify();
+  }
 
   // +---------+------------------------------------------------------
   // | Methods |
@@ -65,6 +78,17 @@ public class Fraction {
   public double doubleValue() {
     return this.num.doubleValue() / this.denom.doubleValue();
   } // doubleValue()
+  
+  /**
+   * Identifies the fractional value of this fraction
+   * @return the fractional value
+   */
+  public Fraction fractional() {
+    BigInteger resultNum = num.remainder(denom);
+    BigInteger resultDen = denom;
+
+    return new Fraction(resultNum, resultDen);
+  }
 
   /**
    * Add the fraction other to this fraction.
@@ -83,6 +107,17 @@ public class Fraction {
     // Return the computed value
     return new Fraction(resultNumerator, resultDenominator);
   }// add(Fraction)
+
+  /**
+   * Multiply the fraction other to this fraction
+   * @return the product of these two fractions
+   */
+  public Fraction multiply(Fraction timeMe) {
+    BigInteger resultNum = num.multiply(timeMe.num);
+    BigInteger resultDen = denom.multiply(timeMe.denom);
+
+    return new Fraction(resultNum, resultDen);
+  }
 
   /**
    * Get the denominator of this fraction.
@@ -112,5 +147,11 @@ public class Fraction {
     // return this.num.toString().concat("/").concat(this.denom.toString());
     return this.num + "/" + this.denom;
   } // toString()
+
+  private void simplify() {
+    BigInteger gcd = num.gcd(denom);
+    num = num.divide(gcd);
+    denom = denom.divide(gcd);
+  }
 } // class Fraction
 
